@@ -1,16 +1,15 @@
-# my_flutter_pokedex
+# My Flutter Pokedex
 
-A new Flutter project.
+<img src="https://github.com/CumiTerbang/my_flutter_pokedex/blob/main/readme_asstes/screenshot_1.png" width="200" height="355,56">
 
-## Getting Started
+a flutter app demo to view pokemon info using API from  [Poke API](https://pokeapi.co/)
 
-This project is a starting point for a Flutter application.
+## Features
+1. Scrolling through all available pokemon in Catch menu
 
-A few resources to get you started if this is your first Flutter project:
+## Build App requirements
+- Using FLutter 3.38.1
+- Using Dart 3.10.0
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Code Design & Structure
+This project is using BLoC state management and clean architecture pattern
