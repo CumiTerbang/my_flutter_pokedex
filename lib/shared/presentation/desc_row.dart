@@ -14,14 +14,20 @@ class DescRow extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(descKey),
-        Text(descValue,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),),
-      ],
+    return Container(
+      padding: EdgeInsets.only(bottom: 8.0),
+      child: Row(
+        children: [
+          Container(
+              width: 100.0,
+              child: Text(descKey)),
+          SizedBox(width: 8.0,),
+          Text(descValue,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),),
+        ],
+      ),
     );
   }
 
