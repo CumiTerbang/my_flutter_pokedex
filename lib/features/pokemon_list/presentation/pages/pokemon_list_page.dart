@@ -1,15 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_flutter_pokedex/features/pokemon_list/domain/models/pokemon_list/pokemon_list_item_model.dart';
 import 'package:my_flutter_pokedex/features/pokemon_list/domain/usecase/pokemon_list_nextpage_usecase.dart';
 import 'package:my_flutter_pokedex/shared/presentation/app_loader.dart';
-import 'package:my_flutter_pokedex/shared/presentation/releod_widget.dart';
+import 'package:my_flutter_pokedex/shared/presentation/reload_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:my_flutter_pokedex/core/utils/injections.dart';
 import 'package:my_flutter_pokedex/features/pokemon_list/domain/models/pokemon_list/pokemon_list_model.dart';
 import 'package:my_flutter_pokedex/features/pokemon_list/domain/usecase/pokemon_list_firstpage_usecase.dart';
-import 'package:my_flutter_pokedex/features/pokemon_list/presentation/bloc/pokemon_list_bloc.dart';
+import 'package:my_flutter_pokedex/features/pokemon_list/presentation/bloc/pokemon_list/pokemon_list_bloc.dart';
 import 'package:my_flutter_pokedex/features/pokemon_list/presentation/widgets/pokemon_grid_item_widget.dart';
 
 class PokemonListPage extends StatefulWidget {
@@ -42,69 +42,74 @@ class _PokemonListPage extends State<PokemonListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("My FLutter Pokedex"),
-      ),
-      body: BlocConsumer<PokemonListBloc, PokemonListState>(
-        bloc: _bloc,
-        listener: (BuildContext context, PokemonListState state) {
-          if (state is SuccessGetPokemonListFirstPageState) {
-            pokemonListModel = PokemonListModel();
-            pokemonListModel = state.pokemonListModel;
-            _refreshController.refreshCompleted(resetFooterState: true);
-          }
-        },
-        builder: (BuildContext context, PokemonListState state) {
-          if (state is LoadingGetPokemonListFirstPageState) {
-            return const AppLoader();
-          } else if (state is ErrorGetPokemonListFirstPageState) {
-            return ReloadWidget.error(
-              content: state.errorMsg,
-              onPressed: () {
-                callPokemonList();
-              },
-            );
-          }
+    return ScreenUtilInit(
+      designSize: const Size(360, 690),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text("My FLutter Pokedex"),
+        ),
+        body: BlocConsumer<PokemonListBloc, PokemonListState>(
+          bloc: _bloc,
+          listener: (BuildContext context, PokemonListState state) {
+            if (state is SuccessGetPokemonListFirstPageState) {
+              pokemonListModel = PokemonListModel();
+              pokemonListModel = state.pokemonListModel;
+              _refreshController.refreshCompleted(resetFooterState: true);
+            }
+          },
+          builder: (BuildContext context, PokemonListState state) {
+            if (state is LoadingGetPokemonListFirstPageState) {
+              return const AppLoader();
+            } else if (state is ErrorGetPokemonListFirstPageState) {
+              return ReloadWidget.error(
+                content: state.errorMsg,
+                onPressed: () {
+                  callPokemonList();
+                },
+              );
+            }
 
-          if (pokemonListModel.results == null ||
-              pokemonListModel.results!.isEmpty) {
-            return ReloadWidget.empty(content: "No Data");
-          }
+            if (pokemonListModel.results == null ||
+                pokemonListModel.results!.isEmpty) {
+              return ReloadWidget.empty(content: "No Data");
+            }
 
-          return SmartRefresher(
-            controller: _refreshController,
-            enablePullDown: true,
-            enablePullUp: false,
-            onLoading: null,
-            onRefresh: _onRefresh,
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+            return SmartRefresher(
+              controller: _refreshController,
+              enablePullDown: true,
+              enablePullUp: false,
+              onLoading: null,
+              onRefresh: _onRefresh,
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                itemCount: pokemonListModel.results?.length ?? 0,
+                itemBuilder: (BuildContext context, int index) {
+                  return PokemonGridItemWidget(
+                    index: index,
+                    item: pokemonListModel.results?[index],
+                  );
+                },
               ),
-              itemCount: pokemonListModel.results?.length ?? 0,
-              itemBuilder: (BuildContext context, int index) {
-                return PokemonGridItemWidget(
-                  index: index,
-                  item: pokemonListModel.results?[index],
-                );
-              },
-            ),
-          );
-        },
-      ),
+            );
+          },
+        ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _refreshController.position?.animateTo(
-            0.0, // The desired scroll offset (0.0 for the top)
-            duration: Duration(milliseconds: 300), // Animation duration
-            curve: Curves.easeOut, // Animation curve
-          );
-        },
-        tooltip: 'Back to Top',
-        child: const Icon(Icons.arrow_upward),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _refreshController.position?.animateTo(
+              0.0, // The desired scroll offset (0.0 for the top)
+              duration: Duration(milliseconds: 300), // Animation duration
+              curve: Curves.easeOut, // Animation curve
+            );
+          },
+          tooltip: 'Back to Top',
+          child: const Icon(Icons.arrow_upward),
+        ),
       ),
     );
   }

@@ -9,11 +9,11 @@ part of 'pokemon_detail_abilities_model.dart';
 PokemonDetailAbilitiesModel _$PokemonDetailAbilitiesModelFromJson(
   Map<String, dynamic> json,
 ) => PokemonDetailAbilitiesModel(
-  move: json['move'] == null
+  ability: json['ability'] == null
       ? null
-      : PokemonDetailMoveModel.fromJson(json['move']),
+      : PokemonDetaiAbilityModel.fromJson(json['ability']),
 );
 
 Map<String, dynamic> _$PokemonDetailAbilitiesModelToJson(
   PokemonDetailAbilitiesModel instance,
-) => <String, dynamic>{'move': instance.move};
+) => <String, dynamic>{'ability': instance.ability};

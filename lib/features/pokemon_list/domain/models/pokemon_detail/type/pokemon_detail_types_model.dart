@@ -5,7 +5,7 @@ part 'pokemon_detail_types_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class PokemonDetailTypesModel{
-  String? slot;
+  int? slot;
   PokemonDetailTypeModel? type;
 
   PokemonDetailTypesModel({this.slot, this.type});

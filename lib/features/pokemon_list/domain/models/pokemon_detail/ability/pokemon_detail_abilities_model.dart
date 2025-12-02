@@ -1,13 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:my_flutter_pokedex/features/pokemon_list/domain/models/pokemon_detail/ability/pokemon_detail_ability_model.dart';
 import 'package:my_flutter_pokedex/features/pokemon_list/domain/models/pokemon_detail/move/pokemon_detail_move_model.dart';
 
 part 'pokemon_detail_abilities_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class PokemonDetailAbilitiesModel{
-  PokemonDetailMoveModel? move;
+  PokemonDetaiAbilityModel? ability;
 
-  PokemonDetailAbilitiesModel({this.move});
+  PokemonDetailAbilitiesModel({this.ability});
 
   factory PokemonDetailAbilitiesModel.fromJson(json) =>
       _$PokemonDetailAbilitiesModelFromJson(json);

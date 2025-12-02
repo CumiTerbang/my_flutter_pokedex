@@ -9,7 +9,7 @@ part of 'pokemon_detail_types_model.dart';
 PokemonDetailTypesModel _$PokemonDetailTypesModelFromJson(
   Map<String, dynamic> json,
 ) => PokemonDetailTypesModel(
-  slot: json['slot'] as String?,
+  slot: (json['slot'] as num?)?.toInt(),
   type: json['type'] == null
       ? null
       : PokemonDetailTypeModel.fromJson(json['type']),

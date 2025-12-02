@@ -11,8 +11,8 @@ class PokemonDetailUsecase extends UseCase<PokemonDetailModel, String> {
   PokemonDetailUsecase(this.repo);
 
   @override
-  Future<Either<Failure, PokemonDetailModel>> call(String param) async{
-    final result = await repo.getPokemonDetail(param);
+  Future<Either<Failure, PokemonDetailModel>> call(String name) async{
+    final result = await repo.getPokemonDetail(name);
     return result.fold((l) {
       return Left(l);
     }, (r) async {

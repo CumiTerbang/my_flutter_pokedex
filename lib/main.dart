@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_flutter_pokedex/core/helper/go_router/app_go_router.dart';
 import 'package:my_flutter_pokedex/features/pokemon_list/presentation/pages/pokemon_list_page.dart';
 import 'package:my_flutter_pokedex/core/utils/injections.dart';
 
@@ -14,11 +15,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'My Flutter Pokedex',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const PokemonListPage(),
+      routerConfig: appGoRouter,
     );
   }
 }
