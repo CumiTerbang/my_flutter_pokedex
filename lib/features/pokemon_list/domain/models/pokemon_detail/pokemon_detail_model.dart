@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:my_flutter_pokedex/features/pokemon_list/domain/models/pokemon_detail/ability/pokemon_detail_abilities_model.dart';
+import 'package:my_flutter_pokedex/features/pokemon_list/domain/models/pokemon_detail/base_stats/pokemon_detail_stats_model.dart';
 import 'package:my_flutter_pokedex/features/pokemon_list/domain/models/pokemon_detail/move/pokemon_detail_moves_model.dart';
 import 'package:my_flutter_pokedex/features/pokemon_list/domain/models/pokemon_detail/type/pokemon_detail_types_model.dart';
 
@@ -14,6 +15,7 @@ class PokemonDetailModel {
   List<PokemonDetailTypesModel>? types;
   List<PokemonDetailAbilitiesModel>? abilities;
   List<PokemonDetailMovesModel>? moves;
+  List<PokemonDetailStatsModel>? stats;
 
   PokemonDetailModel({
     this.name,
@@ -23,6 +25,7 @@ class PokemonDetailModel {
     this.types,
     this.abilities,
     this.moves,
+    this.stats,
   });
 
   factory PokemonDetailModel.fromJson(json) => _$PokemonDetailModelFromJson(json);

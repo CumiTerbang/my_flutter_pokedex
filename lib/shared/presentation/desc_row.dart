@@ -17,15 +17,19 @@ class DescRow extends StatelessWidget{
     return Container(
       padding: EdgeInsets.only(bottom: 8.0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
               width: 100.0,
               child: Text(descKey)),
-          SizedBox(width: 8.0,),
-          Text(descValue,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),),
+          SizedBox(width: 16.0,),
+          Container(
+            width: 200.0,
+            child: Text(descValue,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),),
+          ),
         ],
       ),
     );

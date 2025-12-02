@@ -150,10 +150,16 @@ class _PokemonDetailPage extends State<PokemonDetailPage> with SingleTickerProvi
                   child: TabBarView(
                       controller: tabController,
                       children: [
-                        DetailAbout(),
-                        DetailBaseStats(),
+                        DetailAbout(
+                          height: pokemonDetailModel.height,
+                          weight: pokemonDetailModel.weight,
+                          abilities: pokemonDetailModel.abilities ?? [],
+                        ),
+                        DetailBaseStats(
+                          stats: pokemonDetailModel.stats ?? [],
+                        ),
                         DetailEvolution(),
-                        DetailMoves()
+                        DetailMoves(moves: pokemonDetailModel.moves ?? [],)
                       ]),
                 )
               ],
@@ -171,18 +177,18 @@ class _PokemonDetailPage extends State<PokemonDetailPage> with SingleTickerProvi
   }
 
   String getPokemonTypeString(List<PokemonDetailTypesModel>? types) {
-    String typesString = "";
+    if (types == null || types.isEmpty) return "";
 
-    if (types == null || types.isEmpty) return typesString;
+    List<String> typesNewString = [];
 
     for (var type in types) {
       String just_type = (type.type?.name) ?? "";
-      if(!just_type.isEmpty){
-        typesString = typesString + just_type + ", ";
+      if(just_type.isNotEmpty){
+        typesNewString.add(just_type);
       }
     }
 
-    typesString = typesString.substring(0, typesString.length-2);
-    return typesString;
+    return typesNewString.join(", ");
   }
+
 }
