@@ -132,6 +132,14 @@ class _PokemonDetailPage extends State<PokemonDetailPage>
     );
   }
 
+  String getPokemonNumber() {
+    int pokemonId = pokemonDetailModel.id ?? 0;
+
+    if (pokemonId < 100) return "#" + pokemonId.toString().padLeft(3, '0');
+
+    return "#" + pokemonId.toString();
+  }
+
   Widget topBody() {
     return Container(
       color: Colors.lightGreenAccent,
@@ -140,7 +148,7 @@ class _PokemonDetailPage extends State<PokemonDetailPage>
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("#" + pokemonDetailModel.id.toString().padLeft(3, '0')),
+          Text(getPokemonNumber()),
           Text(
             widget.name.replaceFirst(
               widget.name[0],
