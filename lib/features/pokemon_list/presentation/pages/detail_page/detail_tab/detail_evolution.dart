@@ -5,15 +5,18 @@ class DetailEvolution extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          DescRow(descKey: "Species", descValue: "xxxxxx"),
-          DescRow(descKey: "Height", descValue: "xxxxxx"),
-          DescRow(descKey: "Weight", descValue: "xxxxxx"),
-          DescRow(descKey: "Abilities", descValue: "xxxxxx"),
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DescRow(descKey: "Species", descValue: "xxxxxx"),
+            DescRow(descKey: "Height", descValue: "xxxxxx"),
+            DescRow(descKey: "Weight", descValue: "xxxxxx"),
+            DescRow(descKey: "Abilities", descValue: "xxxxxx"),
+          ],
+        ),
       ),
     );
   }

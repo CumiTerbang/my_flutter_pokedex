@@ -9,12 +9,15 @@ class DetailMoves extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          ...getMovesInfo(),
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ...getMovesInfo(),
+          ],
+        ),
       ),
     );
   }

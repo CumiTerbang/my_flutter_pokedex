@@ -25,21 +25,29 @@ class PokemonDetailPage extends StatefulWidget {
   State<StatefulWidget> createState() => _PokemonDetailPage();
 }
 
-class _PokemonDetailPage extends State<PokemonDetailPage> with SingleTickerProviderStateMixin{
+class _PokemonDetailPage extends State<PokemonDetailPage>
+    with SingleTickerProviderStateMixin {
   final PokemonDetailBloc _bloc = PokemonDetailBloc(
     pokemonDetailUsecase: sl<PokemonDetailUsecase>(),
   );
 
   PokemonDetailModel pokemonDetailModel = PokemonDetailModel();
 
-  late TabController tabController;
+  late TabController _tabController;
+  late ScrollController _scrollController;
+  late bool fixedScroll;
 
   @override
   void initState() {
-    tabController = TabController(length: 4, vsync: this);
-    tabController.addListener(() {
-      setState(() {});
-    });
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+
+    _tabController = TabController(length: 4, vsync: this);
+    // _tabController.addListener(() {
+    //   setState(() {});
+    // });
+    _tabController.addListener(_smoothScrollToTop);
+
     callPokemonDetail();
     super.initState();
   }
@@ -81,88 +89,72 @@ class _PokemonDetailPage extends State<PokemonDetailPage> with SingleTickerProvi
             }
 
             return pageBody();
-
           },
         ),
       ),
     );
   }
 
-  Widget pageBody(){
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            color: Colors.lightGreenAccent,
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("#"+pokemonDetailModel.id.toString().padLeft(3, '0')),
-                Text(
-                  widget.name.replaceFirst(
-                    widget.name[0],
-                    widget.name[0].toUpperCase(),
-                  ),
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(getPokemonTypeString(pokemonDetailModel.types)),
-                Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  child: CachedImageWidget(
-                    imageUrl: getPokemonArtworkPath(
-                      pokemonDetailModel.id.toString(),
-                    ),
-                    width: 200,
-                  ),
-                ),
+  Widget pageBody() {
+    return NestedScrollView(
+      controller: _scrollController,
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return [
+          SliverToBoxAdapter(child: topBody()),
+          SliverToBoxAdapter(
+            child: TabBar(
+              controller: _tabController,
+              tabs: [
+                Tab(text: "About"),
+                Tab(text: "Base Stats"),
+                Tab(text: "Evolution"),
+                Tab(text: "Moves"),
               ],
             ),
           ),
+        ];
+      },
+      body: Container(
+        child: TabBarView(
+          controller: _tabController,
+          children: [
+            DetailAbout(
+              height: pokemonDetailModel.height,
+              weight: pokemonDetailModel.weight,
+              abilities: pokemonDetailModel.abilities ?? [],
+            ),
+            DetailBaseStats(stats: pokemonDetailModel.stats ?? []),
+            DetailEvolution(),
+            DetailMoves(moves: pokemonDetailModel.moves ?? []),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget topBody() {
+    return Container(
+      color: Colors.lightGreenAccent,
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("#" + pokemonDetailModel.id.toString().padLeft(3, '0')),
+          Text(
+            widget.name.replaceFirst(
+              widget.name[0],
+              widget.name[0].toUpperCase(),
+            ),
+            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+          ),
+          Text(getPokemonTypeString(pokemonDetailModel.types)),
           Container(
-            color: Colors.yellowAccent,
-            child: Column(
-              children: [
-                TabBar(
-                    controller: tabController,
-                    tabs: [
-                      Tab(
-                        text: "About",
-                      ),
-                      Tab(
-                        text: "Base Stats",
-                      ),
-                      Tab(
-                        text: "Evolution",
-                      ),
-                      Tab(
-                        text: "Moves",
-                      ),
-      
-                    ]),
-                SizedBox(
-                  height: 500.0,
-                  child: TabBarView(
-                      controller: tabController,
-                      children: [
-                        DetailAbout(
-                          height: pokemonDetailModel.height,
-                          weight: pokemonDetailModel.weight,
-                          abilities: pokemonDetailModel.abilities ?? [],
-                        ),
-                        DetailBaseStats(
-                          stats: pokemonDetailModel.stats ?? [],
-                        ),
-                        DetailEvolution(),
-                        DetailMoves(moves: pokemonDetailModel.moves ?? [],)
-                      ]),
-                )
-              ],
+            width: double.infinity,
+            alignment: Alignment.center,
+            child: CachedImageWidget(
+              imageUrl: getPokemonArtworkPath(pokemonDetailModel.id.toString()),
+              width: 200,
             ),
           ),
         ],
@@ -183,7 +175,7 @@ class _PokemonDetailPage extends State<PokemonDetailPage> with SingleTickerProvi
 
     for (var type in types) {
       String just_type = (type.type?.name) ?? "";
-      if(just_type.isNotEmpty){
+      if (just_type.isNotEmpty) {
         typesNewString.add(just_type);
       }
     }
@@ -191,4 +183,21 @@ class _PokemonDetailPage extends State<PokemonDetailPage> with SingleTickerProvi
     return typesNewString.join(", ");
   }
 
+  _scrollListener() {
+    if (fixedScroll) {
+      _scrollController.jumpTo(0);
+    }
+  }
+
+  _smoothScrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: Duration(microseconds: 300),
+      curve: Curves.ease,
+    );
+
+    setState(() {
+      fixedScroll = _tabController.index == 2;
+    });
+  }
 }

@@ -9,18 +9,15 @@ class DetailBaseStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ...getBaseStatInfo(),
-          // DescRow(descKey: "Total", descValue: "xxxxxx"),
-          // SizedBox(height: 16.0,),
-          // Text('Type Defenses', style: TextStyle(fontWeight:FontWeight.bold),),
-          // SizedBox(height: 16.0,),
-          // Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit')
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ...getBaseStatInfo(),
+          ],
+        ),
       ),
     );
   }
