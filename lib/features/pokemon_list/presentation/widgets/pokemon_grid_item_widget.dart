@@ -31,7 +31,7 @@ class PokemonGridItemWidget extends StatelessWidget {
             children: [
               CachedImageWidget(
                 imageUrl: getPokemonArtworkPath(getPokemonIdFromUrl(item?.url ?? "")),
-                width: 70,
+                width: 100,
               ),
               SizedBox(height: 8),
               Text((item?.name ?? "").toUpperCase()),

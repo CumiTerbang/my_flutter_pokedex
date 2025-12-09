@@ -53,9 +53,13 @@ class _PokemonDetailPage extends State<PokemonDetailPage>
     _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(_smoothScrollToTop);
 
+    initCall();
+    super.initState();
+  }
+
+  void initCall(){
     callPokemonDetail();
     callPokemonSpecies();
-    super.initState();
   }
 
   @override
@@ -81,7 +85,9 @@ class _PokemonDetailPage extends State<PokemonDetailPage>
               pokemonSpeciesModel = PokemonSpeciesModel();
               pokemonSpeciesModel = state.pokemonSpeciesModel;
 
-              callPokemonEvolChain(pokemonSpeciesModel.evolution_chain?.url ?? "");
+              callPokemonEvolChain(
+                pokemonSpeciesModel.evolution_chain?.url ?? "",
+              );
             }
 
             if (state is SuccessGetPokemonEvolChainState) {
@@ -90,14 +96,29 @@ class _PokemonDetailPage extends State<PokemonDetailPage>
             }
           },
           builder: (BuildContext context, PokemonDetailState state) {
-            if (state is LoadingGetPokemonDetailState) {
+            if (state is LoadingGetPokemonDetailState ||
+                state is LoadingGetPokemonSpeciesState ||
+                state is LoadingGetPokemonEvolChainState) {
               return const AppLoader();
             } else if (state is ErrorGetPokemonDetailState) {
               return ReloadWidget.error(
                 content: state.errorMsg,
                 onPressed: () {
-                  callPokemonDetail();
-                  callPokemonSpecies();
+                  initCall();
+                },
+              );
+            } else if (state is ErrorGetPokemonSpeciesState) {
+              return ReloadWidget.error(
+                content: state.errorMsg,
+                onPressed: () {
+                  initCall();
+                },
+              );
+            } else if (state is ErrorGetPokemonEvolChainState) {
+              return ReloadWidget.error(
+                content: state.errorMsg,
+                onPressed: () {
+                  initCall();
                 },
               );
             }
@@ -143,7 +164,7 @@ class _PokemonDetailPage extends State<PokemonDetailPage>
               abilities: pokemonDetailModel.abilities ?? [],
             ),
             DetailBaseStats(stats: pokemonDetailModel.stats ?? []),
-            DetailEvolution(evolChain: pokemonEvolModel,),
+            DetailEvolution(evolChain: pokemonEvolModel),
             DetailMoves(moves: pokemonDetailModel.moves ?? []),
           ],
         ),
@@ -191,21 +212,30 @@ class _PokemonDetailPage extends State<PokemonDetailPage>
 
   callPokemonDetail({bool withLoading = true}) {
     _bloc.add(
-      OnGettingPokemonDetailEvent(withLoading: withLoading, name: widget.pokemonId),
+      OnGettingPokemonDetailEvent(
+        withLoading: withLoading,
+        name: widget.pokemonId,
+      ),
     );
   }
 
   callPokemonEvolChain(String evolChainUrl, {bool withLoading = true}) {
-    if(evolChainUrl.isEmpty) return;
+    if (evolChainUrl.isEmpty) return;
 
     _bloc.add(
-      OnGettingPokemonEvolChainEvent(withLoading: withLoading, evolChainUrl: evolChainUrl),
+      OnGettingPokemonEvolChainEvent(
+        withLoading: withLoading,
+        evolChainUrl: evolChainUrl,
+      ),
     );
   }
 
   callPokemonSpecies({bool withLoading = true}) {
     _bloc.add(
-      OnGettingPokemonSpeciesEvent(withLoading: withLoading, pokemonId: widget.pokemonId),
+      OnGettingPokemonSpeciesEvent(
+        withLoading: withLoading,
+        pokemonId: widget.pokemonId,
+      ),
     );
   }
 
