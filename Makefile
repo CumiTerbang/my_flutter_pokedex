@@ -16,7 +16,7 @@ fvm-run:
 	fvm flutter run
 
 init-dir:
-	echo "==MAKE CLEAN ARCHITECTURE DIRECTORIES=="
+	echo "==INITIALIZED BASE DIRECTORY=="
 	mkdir lib\core
 	mkdir lib\features
 	mkdir lib\shared
@@ -49,3 +49,24 @@ init-dir:
 	mkdir lib\features\features_a\presentation\pages
 	mkdir lib\features\features_a\presentation\widget
 
+	mkdir assets\svg_images
+
+fvm-init-dep:
+	echo "==INITIALIZED MANDATORY DEPENDENCY=="
+	fvm flutter pub add go_router
+	fvm flutter pub add dio
+	fvm flutter pub add json_annotation
+	fvm flutter pub add get_it
+	fvm flutter pub add freezed
+	fvm flutter pub add equatable
+	fvm flutter pub add shared_preferences
+	fvm flutter pub add flutter_bloc
+
+	fvm flutter pub add dartz
+	fvm flutter pub add intl
+	fvm flutter pub add cached_network_image
+	fvm flutter pub add flutter_svg
+
+	fvm flutter pub add pull_to_refresh
+	fvm flutter pub add shimmer
+	fvm flutter pub add flutter_screenutil
