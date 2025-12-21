@@ -1,4 +1,3 @@
-#CLEAN GET GENERATE USING FVM
 fvm-cgg:
 	@echo "==CLEAN THE REPOSITORY=="
 	fvm flutter clean
@@ -16,7 +15,7 @@ fvm-run:
 	fvm flutter run
 
 init-dir:
-	echo "==INITIALIZED BASE DIRECTORY=="
+	echo "==INITIALIZED BASE DIRECTORY FOR CLEAN ARCHITECTURE=="
 	mkdir lib\core
 	mkdir lib\features
 	mkdir lib\shared
@@ -52,10 +51,12 @@ init-dir:
 	mkdir assets\svg_images
 
 fvm-init-dep:
-	echo "==INITIALIZED MANDATORY DEPENDENCY=="
+	echo "==INITIALIZED ADDING MANDATORY DEPENDENCY=="
+	fvm flutter pub add build_runner
 	fvm flutter pub add go_router
 	fvm flutter pub add dio
 	fvm flutter pub add json_annotation
+	fvm flutter pub add json_serializable
 	fvm flutter pub add get_it
 	fvm flutter pub add freezed
 	fvm flutter pub add equatable
@@ -70,3 +71,8 @@ fvm-init-dep:
 	fvm flutter pub add pull_to_refresh
 	fvm flutter pub add shimmer
 	fvm flutter pub add flutter_screenutil
+
+
+
+
+
